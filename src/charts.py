@@ -176,7 +176,7 @@ def gauge_riesgo(proba_pct: float, nivel: str, color: str,
             steps=[
                 dict(range=[0, 30],          color="#1C2128"),
                 dict(range=[30, umbral_pct], color="#1C2128"),
-                dict(range=[umbral_pct, 100],color="#29111355"),
+                dict(range=[umbral_pct, 100], color="rgba(41,17,19,0.33)"),
             ],
             threshold=dict(line=dict(color=YELLOW, width=2),
                            thickness=0.75, value=umbral_pct),
