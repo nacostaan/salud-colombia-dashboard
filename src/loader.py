@@ -27,7 +27,7 @@ from huggingface_hub import hf_hub_download
 # ── Repositorio Hugging Face ──────────────────────────────────────────────────
 # Cambiar HF_REPO_ID por tu repo una vez que subas los archivos.
 # Formato: "tu-usuario-hf/salud-colombia-modelos"
-HF_REPO_ID = os.getenv("HF_REPO_ID", "tu-usuario-hf/salud-colombia-modelos")
+HF_REPO_ID = os.getenv("HF_REPO_ID", "nicoacos/salud-colombia-modelos")
 
 CACHE_DIR = Path(".cache/modelos")
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
