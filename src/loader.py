@@ -107,13 +107,22 @@ def cargar_datos_historicos() -> pd.DataFrame:
     """
     path = _hf_download("tabla_hechos_salud_colombia.parquet")
     cols_necesarias = [
-        "COD_MPIO", "NOM_MPIO", "COD_DPTO", "NOM_DPTO",
-        "ANIO", "LATITUD", "LONGITUD",
-        "TASA_MORTALIDAD_EVITABLE_100K", "FLG_ZONA_ALTO_RIESGO",
-        "POBLACION_TOTAL", "MUERTES_ATRIBUIBLES", "TOTAL_FALLECIDOS",
-        "TASA_MORTALIDAD_TOTAL_100K", "PCT_AFILIACION",
+    "COD_MPIO", "NOM_MPIO", "COD_DPTO", "NOM_DPTO",
+    "ANIO", "LATITUD", "LONGITUD",
+    "TASA_MORTALIDAD_EVITABLE_100K", "FLG_ZONA_ALTO_RIESGO",
+    "POBLACION_TOTAL", "MUERTES_ATRIBUIBLES", "TOTAL_FALLECIDOS",
+    "TASA_MORTALIDAD_TOTAL_100K", "PCT_AFILIACION",
+    # Columnas requeridas por el formulario de predicción (app.py vista Predicción)
+    "TASA_ATENCIONES_RIPS_100K",
+    "BDUA_TOTAL_AFILIADOS",
+    "VALOR_GIRADO_NORMAL",
+    "N_GIROS",
     ]
-    df = pd.read_parquet(path, columns=cols_necesarias)
+    # Cargar solo las columnas que existan en el parquet (por si alguna falta)
+    import pyarrow.parquet as pq
+    cols_en_parquet = pq.read_schema(path).names
+    cols_a_leer = [c for c in cols_necesarias if c in cols_en_parquet]
+    df = pd.read_parquet(path, columns=cols_a_leer)
     df["ANIO"] = df["ANIO"].astype(int)
     return df
 
