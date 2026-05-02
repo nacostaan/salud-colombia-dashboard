@@ -154,7 +154,7 @@ def gauge_tasa(tasa: float, nivel: str, color: str) -> go.Figure:
         title=dict(text=f"Tasa predicha · <b>{nivel}</b>",
                    font_size=14, font_color=TEXT_DIM),
     ))
-    fig.update_layout(**{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k},
+    fig.update_layout(**{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k and k != "margin"},
                       height=280, margin=dict(l=24, r=24, t=60, b=8))
     return fig
 
@@ -184,7 +184,7 @@ def gauge_riesgo(proba_pct: float, nivel: str, color: str,
         title=dict(text=f"Prob. zona alto riesgo · <b>{nivel}</b>",
                    font_size=14, font_color=TEXT_DIM),
     ))
-    fig.update_layout(**{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k},
+    fig.update_layout(**{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k and k != "margin"},
                       height=280, margin=dict(l=24, r=24, t=60, b=8))
     return fig
 
@@ -223,7 +223,7 @@ def tabla_top_municipios(df_top: pd.DataFrame) -> go.Figure:
         ),
     ))
     fig.update_layout(
-        **{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k},
+        **{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k and k != "margin"},
         height=min(60 + len(df) * 30, 700),
         title=dict(text="Top Municipios — Mayor Tasa de Mortalidad Evitable",
                    font_color=TEXT, font_size=15),
@@ -270,7 +270,7 @@ def comparativa_modelos_reg(metricas_reg: dict) -> go.Figure:
     ), row=1, col=2)
 
     fig.update_layout(
-        **{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k},
+        **{k: v for k, v in LAYOUT_BASE.items() if "axis" not in k and k != "margin"},
         height=max(300, len(df_m) * 30 + 100),
         title=dict(text="Comparativa modelos de regresión — Test out-of-time",
                    font_color=TEXT, font_size=15),
