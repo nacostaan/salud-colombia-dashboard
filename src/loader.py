@@ -76,8 +76,8 @@ def _hf_download(filename: str) -> Path:
 
 @st.cache_resource(show_spinner="Cargando modelo de regresión…")
 def cargar_modelo_regresion():
-    """Descarga y cachea el pipeline de regresión (HistGB_R)."""
-    path = _hf_download("modelo_HistGB_R.pkl")
+    """Descarga y cachea el pipeline de regresión (ExtraTrees_R)."""
+    path = _hf_download("modelo_ExtraTrees_R.pkl")
     return joblib.load(path)
 
 
