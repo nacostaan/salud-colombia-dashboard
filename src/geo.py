@@ -205,10 +205,10 @@ def mapa_departamento(df: pd.DataFrame, cod_dpto: str,
     fig = go.Figure(go.Scattergeo(
         lat=df_d["LATITUD"],
         lon=df_d["LONGITUD"],
-        text=df_d["HOVER"],
+        text=df_d["NOM_MPIO"],            # ← label visible en el mapa
+        hovertext=df_d["HOVER"],          # ← texto del tooltip
         hoverinfo="text",
         mode="markers+text",
-        texttext=df_d["NOM_MPIO"],
         textposition="top center",
         textfont=dict(size=8, color=TEXT_DIM),
         marker=dict(
