@@ -60,6 +60,10 @@ class DropAllNanCols(BaseEstimator, TransformerMixin):
     def get_feature_names_out(self, input_features=None):
         return np.array(self.cols_validas_)
 
+# ── Registrar en __main__ para deserialización de .pkl del notebook ──────────
+import __main__
+__main__.DropAllNanCols = DropAllNanCols
+
 
 def _hf_download(filename: str) -> Path:
     """Descarga un archivo de HF Hub al cache local."""
