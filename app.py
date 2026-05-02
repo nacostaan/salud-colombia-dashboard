@@ -316,73 +316,65 @@ elif vista == "🔮 Predicción":
                 "Tasa mortalidad año anterior (/ 100k)",
                 min_value=0.0, max_value=800.0,
                 value=round(tasa_hist_lag1, 1), step=1.0,
-                help="Tasa del año inmediatamente anterior (se pre-llena con datos históricos reales si existen)",
+                help="Tasa del año inmediatamente anterior",
             )
             lag2 = st.number_input(
                 "Tasa mortalidad hace 2 años (/ 100k)",
                 min_value=0.0, max_value=800.0,
                 value=round(tasa_hist_lag2, 1), step=1.0,
             )
+            _pob_raw = muni_sel.get("POBLACION_TOTAL")
             pob = st.number_input(
                 "Población total",
                 min_value=500, max_value=10_000_000,
-                value=int(muni_sel.get("POBLACION_TOTAL") or 50_000),
+                value=int(_pob_raw) if pd.notna(_pob_raw) else 50_000,
                 step=500,
             )
 
         with fc2:
+            _pct = df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]["PCT_AFILIACION"].dropna().median()
             pct_afil = st.slider(
                 "% Afiliación al sistema de salud",
                 min_value=0.0, max_value=100.0,
-                value=float(
-                    df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]
-                    ["PCT_AFILIACION"].dropna().median() or 65.0
-                ),
+                value=float(_pct) if pd.notna(_pct) else 65.0,
                 step=0.5,
                 help="Porcentaje de la población afiliada a cualquier régimen de salud",
             )
+            _rips = df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]["TASA_ATENCIONES_RIPS_100K"].dropna().median()
             tasa_rips = st.number_input(
                 "Atenciones RIPS (/ 100k hab)",
                 min_value=0.0, max_value=8_000_000.0,
-                value=float(
-                    df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]
-                    ["TASA_ATENCIONES_RIPS_100K"].dropna().median() or 228_000.0
-                ),
+                value=float(_rips) if pd.notna(_rips) else 228_000.0,
                 step=1_000.0,
             )
+            _bdua = df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]["BDUA_TOTAL_AFILIADOS"].dropna().median()
             bdua_afil = st.number_input(
                 "Afiliados BDUA",
                 min_value=0, max_value=5_000_000,
-                value=int(
-                    df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]
-                    ["BDUA_TOTAL_AFILIADOS"].dropna().median() or 8_000
-                ),
+                value=int(_bdua) if pd.notna(_bdua) else 8_000,
                 step=100,
             )
 
         with fc3:
+            _gir = df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]["VALOR_GIRADO_NORMAL"].dropna().median()
             val_girado = st.number_input(
                 "Valor girado SGP (COP)",
                 min_value=0, max_value=1_000_000_000_000,
-                value=int(
-                    df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]
-                    ["VALOR_GIRADO_NORMAL"].dropna().median() or 121_000_000
-                ),
+                value=int(_gir) if pd.notna(_gir) else 121_000_000,
                 step=1_000_000,
                 format="%d",
                 help="Recursos del Sistema General de Participaciones para salud",
             )
-            n_giros = st.slider("Número de giros SGP al año", 1, 24,
-                                value=int(
-                                    df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]
-                                    ["N_GIROS"].dropna().median() or 12
-                                ))
+            _ng = df_hist[df_hist["COD_MPIO"] == muni_sel["COD_MPIO"]]["N_GIROS"].dropna().median()
+            n_giros = st.slider(
+                "Número de giros SGP al año", 1, 24,
+                value=int(_ng) if pd.notna(_ng) else 12,
+            )
             efic_giro = st.slider(
                 "Eficiencia de giro (índice)",
                 min_value=0.0, max_value=5.0, value=1.0, step=0.05,
                 help="1.0 = eficiencia media nacional. >1.0 = por encima del promedio.",
             )
-
         submitted = st.form_submit_button(
             "🔮 Calcular predicción",
             use_container_width=True,
