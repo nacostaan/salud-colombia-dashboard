@@ -43,18 +43,69 @@ Integra datos de **7 fuentes oficiales** (DANE, RIPS, SGP, BDUA, SIVIGILA, DIVIP
 
 ```
 salud-colombia-dashboard/
-├── app.py                    # Entrypoint Streamlit — 4 vistas
-├── requirements.txt          # Dependencias fijadas
-├── runtime.txt               # Python 3.12
-├── .python-version           # 3.12
-├── .streamlit/
-│   └── config.toml           # Tema oscuro personalizado
-└── src/
-    ├── __init__.py
-    ├── loader.py             # Descarga modelos desde Hugging Face
-    ├── predictor.py          # Lógica de predicción y features
-    ├── charts.py             # Gráficas Plotly reutilizables
-    └── geo.py                # Mapas de Colombia y KPIs geográficos
+│
+├── 📁 .streamlit/
+│   └── config.toml                         # Tema oscuro personalizado
+│
+├── 📁 src/
+│   ├── __init__.py
+│   ├── loader.py                           # Descarga modelos desde Hugging Face
+│   ├── predictor.py                        # Lógica de predicción y features
+│   ├── charts.py                           # Gráficas Plotly reutilizables
+│   └── geo.py                              # Mapas de Colombia y KPIs geográficos
+│
+├── 📁 Datasets_Limpios/                    # Datasets procesados listos para modelado
+│   ├── df_BDUA_limpio.parquet
+│   ├── df_defunciones_atribuibles.parquet
+│   ├── df_poblacion_colombia.parquet
+│   ├── df_SIVIGILA_limpio.parquet
+│   ├── divipola_cabeceras_centros_poblados.parquet
+│   └── Giros_final.parquet
+│
+├── 📁 Notebooks/
+│   │
+│   ├── 📁 Modelos/                         # Entrenamiento y evaluación de modelos ML
+│   │   ├── 9-modelos-ml-salud-v4_1.ipynb
+│   │   └── modelo-ml-paad-nicolas.ipynb
+│   │
+│   └── 📁 Tratamiento_datasets_bruto/      # Pipelines de limpieza por fuente
+│       ├── 📁 BDUA/
+│       │   └── da-bdua-preprocesamiento.ipynb
+│       ├── 📁 Defunciones/
+│       │   ├── 1-defunciones-raw.ipynb
+│       │   ├── 2-defunciones-interim.ipynb
+│       │   ├── 3-transformacion-defunciones.ipynb
+│       │   └── 4-defunciones-atribuibles-salud.ipynb
+│       ├── 📁 Divipola/
+│       │   ├── 5-procesamiento-divipola-geografica.ipynb
+│       │   └── 6-procesamiento-divipola-actualizado.ipynb
+│       ├── 📁 Giros/
+│       │   ├── 1-analisis-exploratorio-giros.ipynb
+│       │   ├── 2-limpieza-de-datos-y-exploracion-giros.ipynb
+│       │   └── 3-giros-final.ipynb
+│       ├── 📁 Poblacion/
+│       │   └── 7-procesamiento-poblacion.ipynb
+│       ├── 📁 RIPS/
+│       │   ├── 1-rips-analisis-exploratorio.ipynb
+│       │   ├── 2-limpieza-de-datos-rips.ipynb
+│       │   ├── 3-rips-final-parte-1.ipynb
+│       │   └── 3-rips-final-parte-2.ipynb
+│       └── 📁 Sivigila/
+│           └── da-sivigila-preprocesamiento.ipynb
+│
+├── 📁 Tabla_de_Hechos/                     # Tabla de hechos final municipio × año
+│   ├── 8-tabla-hechos-final-salud-colombia.ipynb
+│   ├── tabla_hechos_salud_colombia.parquet
+│   ├── tabla_hechos_test.parquet
+│   ├── tabla_hechos_train.parquet
+│   └── df_SIVIGILA_limpio.parquet
+│
+├── app.py                                  # Entrypoint Streamlit — 4 vistas
+├── requirements.txt                        # Dependencias fijadas
+├── runtime.txt                             # Python 3.12
+├── .python-version                         # 3.12
+├── LICENSE
+└── README.md
 ```
 
 ---
@@ -117,12 +168,14 @@ Configurar en Streamlit Community Cloud: **Settings → Secrets** (si cambias el
 | DANE Población | Proyecciones poblacionales municipales | 1985–2042 |
 | DIVIPOLA | Codificación geográfica oficial DANE | Vigente 2025 |
 
+> **Nota:** Los datos crudos originales no se incluyen en este repositorio por su tamaño. Los datasets limpios (`.parquet`) se encuentran en `Datasets_Limpios/` y `Tabla_de_Hechos/`. Para replicar el pipeline completo desde cero, descarga las fuentes desde sus portales oficiales y ejecuta los notebooks en `Notebooks/Tratamiento_datasets_bruto/` en orden numérico.
+
 ---
 
 ## Autores
 
 Proyecto MIAD — Maestría en Inteligencia y Analítica de Datos  
-Universidad de los Andes · Bogotá, Colombia  
+Universidad de los Andes · Bogotá, Colombia
 
 ---
 
