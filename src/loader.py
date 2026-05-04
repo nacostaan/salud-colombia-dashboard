@@ -81,6 +81,8 @@ def _hf_download(filename: str) -> Path:
 @st.cache_resource(show_spinner="Cargando modelo de regresión…")
 def cargar_modelo_regresion():
     """Descarga y cachea el pipeline de regresión (ExtraTrees_R)."""
+    import __main__
+    __main__.DropAllNanCols = DropAllNanCols   # ← garantiza el registro justo antes
     path = _hf_download("modelo_ExtraTrees_R.pkl")
     return joblib.load(path)
 
@@ -88,6 +90,8 @@ def cargar_modelo_regresion():
 @st.cache_resource(show_spinner="Cargando modelo de clasificación…")
 def cargar_modelo_clasificacion():
     """Descarga y cachea el pipeline de clasificación (LightGBM_C)."""
+    import __main__
+    __main__.DropAllNanCols = DropAllNanCols   # ← ídem
     path = _hf_download("modelo_LightGBM_C.pkl")
     return joblib.load(path)
 
@@ -95,9 +99,10 @@ def cargar_modelo_clasificacion():
 @st.cache_resource(show_spinner="Cargando metadatos…")
 def cargar_meta() -> dict:
     """Descarga y cachea el diccionario de metadatos v3."""
+    import __main__
+    __main__.DropAllNanCols = DropAllNanCols   # ← por si meta_modelos también lo usa
     path = _hf_download("meta_modelos_v3.pkl")
     return joblib.load(path)
-
 
 @st.cache_data(show_spinner="Cargando datos históricos…", ttl=3600)
 def cargar_datos_historicos() -> pd.DataFrame:
